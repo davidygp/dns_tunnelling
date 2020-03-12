@@ -1,0 +1,8 @@
+{
+    "EXCLUDED_RTYPE_LIST":["RRSIG","DNSKEY","DS","eNSEC","NSEC3","CDNSKEY","CDS","TSIG","TKEY"],
+    "EXCLUDED_RDATA_LIST":["v=spf1", "docusign=", "verification="],
+
+    "MIN_IP_IP_2LD_COUNT":100,
+    "MIN_IP_IP_2LD_UNIQUE_QNAME_PERC":0.33,
+    "MIN_IP_IP_2LD_TUNNEL_PERC":0.33
+}
