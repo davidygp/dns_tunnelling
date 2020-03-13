@@ -97,24 +97,10 @@ def main():
     spark = SparkSession.builder.getOrCreate()
     register_udfs(spark)
 
-    #schema = t.StructType(
-    #    [
-    #        t.StructField("QNAME", t.StringType(), True),
-    #        t.StructField("RDATA", t.StringType(), True),
-    #        t.StructField("DnsTunnel", t.StringType(), True),
-    #    ]
-    #)
     # Read from csv with delimiter ~ and remove trailing commas from DnsTunnel column
-    #train_df = spark.read.csv(input_train_filepath, header=True, schema=schema, sep="~")
     train_df = spark.read.csv(input_train_filepath, header=True, sep="~")
     train_df = train_df.cache()
     logging.info("EVENT=%s rows are in the train/test dataset" % (train_df.count()))
-
-    #train_df = train_df.select(split(train_df.a,"~").getItem(0),
-    #                          split(train_df.a,"~").getItem(1),
-    #                          split(train_df.a,"~").getItem(2))
-    #train_df = train_df.toDF("QNAME","DnsTunnel","RDATA")
-    #train_df = train_df.select("QNAME","RDATA","DnsTunnel")
     train_df = train_df.withColumn("DnsTunnel",clean_str_udf(train_df.DnsTunnel))
     train_df = train_df.filter("QNAME is not null and RDATA is not null and DnsTunnel is not null")
     train_df = train_df.filter("DnsTunnel == 'tunnel' or DnsTunnel == 'normal'")
@@ -140,7 +126,6 @@ def main():
         "label_count",
         "subdomain_uppercase_char",
         "subdomain_numeric_char",
-        #"subdomain_english_word",
         "average_answer_length",
         "max_answer_length",
         "average_answer_uppercase_char",
